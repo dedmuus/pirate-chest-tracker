@@ -1,0 +1,12 @@
+# Build output
+bin/
+obj/
+dist/
+*.zip
+
+# Personal data and one-off local scripts (never commit these)
+restore-settings.json
+restore-my-games.bat
+settings*.json
+*.user
+.vs/

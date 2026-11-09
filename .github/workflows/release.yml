@@ -1,0 +1,60 @@
+name: Build and release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+permissions:
+  contents: write # needed to create the GitHub Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Work out the version
+        id: version
+        shell: pwsh
+        run: |
+          if ("${{ github.ref_type }}" -eq "tag") { $v = "${{ github.ref_name }}".TrimStart("v") } else { $v = "0.0.0" }
+          "version=$v" >> $env:GITHUB_OUTPUT
+
+      - name: Build single-file exe
+        run: >
+          dotnet publish ChestCounter.csproj -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true -p:DebugType=none
+          -p:Version=${{ steps.version.outputs.version }}
+          -o publish
+
+      - name: Zip with README and checksum
+        shell: pwsh
+        run: |
+          Copy-Item docs/README.txt publish/README.txt
+          Compress-Archive -Path publish/ChestCounter.exe, publish/README.txt -DestinationPath ChestCounter.zip
+          $hash = (Get-FileHash ChestCounter.zip -Algorithm SHA256).Hash.ToLower()
+          "$hash  ChestCounter.zip" | Set-Content ChestCounter.zip.sha256
+          "SHA-256: $hash"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ChestCounter
+          path: |
+            ChestCounter.zip
+            ChestCounter.zip.sha256
+
+      - name: Publish GitHub Release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ChestCounter.zip
+            ChestCounter.zip.sha256
+          generate_release_notes: true

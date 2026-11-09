@@ -1,0 +1,86 @@
+<Application x:Class="ChestCounter.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+      <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="Theme.xaml"/>
+        </ResourceDictionary.MergedDictionaries>
+
+        <LinearGradientBrush x:Key="GoldBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFE88F" Offset="0"/>
+            <GradientStop Color="#F4B63C" Offset="0.55"/>
+            <GradientStop Color="#C98814" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!-- Vector treasure chest, 64x64 -->
+        <DrawingImage x:Key="ChestImage">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="Transparent" Geometry="M0,0 H64 V64 H0 Z"/>
+
+                    <!-- lid -->
+                    <GeometryDrawing Geometry="M6,28 L6,20 C6,12 12,8 20,8 L44,8 C52,8 58,12 58,20 L58,28 Z">
+                        <GeometryDrawing.Brush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#DE9A45" Offset="0"/>
+                                <GradientStop Color="#93521C" Offset="1"/>
+                            </LinearGradientBrush>
+                        </GeometryDrawing.Brush>
+                    </GeometryDrawing>
+
+                    <!-- body -->
+                    <GeometryDrawing Geometry="M6,28 H58 V53 Q58,57 54,57 H10 Q6,57 6,53 Z">
+                        <GeometryDrawing.Brush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#B36C2A" Offset="0"/>
+                                <GradientStop Color="#673811" Offset="1"/>
+                            </LinearGradientBrush>
+                        </GeometryDrawing.Brush>
+                    </GeometryDrawing>
+
+                    <!-- bands, clipped to the chest shape -->
+                    <DrawingGroup ClipGeometry="M6,28 L6,20 C6,12 12,8 20,8 L44,8 C52,8 58,12 58,20 L58,53 Q58,57 54,57 H10 Q6,57 6,53 Z">
+                        <GeometryDrawing Geometry="M8,43 H56">
+                            <GeometryDrawing.Pen>
+                                <Pen Brush="#4A280A" Thickness="1.6"/>
+                            </GeometryDrawing.Pen>
+                        </GeometryDrawing>
+                        <GeometryDrawing Brush="{StaticResource GoldBrush}" Geometry="M13,0 H20 V64 H13 Z M44,0 H51 V64 H44 Z M0,25.5 H64 V31 H0 Z">
+                            <GeometryDrawing.Pen>
+                                <Pen Brush="#2E1A06" Thickness="1.6"/>
+                            </GeometryDrawing.Pen>
+                        </GeometryDrawing>
+                    </DrawingGroup>
+
+                    <!-- outline -->
+                    <GeometryDrawing Geometry="M6,28 L6,20 C6,12 12,8 20,8 L44,8 C52,8 58,12 58,20 L58,53 Q58,57 54,57 H10 Q6,57 6,53 Z">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#2E1A06" Thickness="2.6" LineJoin="Round"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+
+                    <!-- lid highlight -->
+                    <GeometryDrawing Geometry="M22,11 H42">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#70FFFFFF" Thickness="2" StartLineCap="Round" EndLineCap="Round"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+
+                    <!-- lock -->
+                    <GeometryDrawing Brush="{StaticResource GoldBrush}" Geometry="M25,21 H39 V36 Q39,40 35,40 H29 Q25,40 25,36 Z">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#2E1A06" Thickness="1.8" LineJoin="Round"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#2E1A06" Geometry="M29.4,28 A2.6,2.6 0 1 1 34.6,28 A2.6,2.6 0 1 1 29.4,28 Z M30.9,29.5 H33.1 L33.9,35.5 H30.1 Z"/>
+
+                    <!-- sparkle -->
+                    <GeometryDrawing Brush="#FFF7CF" Geometry="M55,1 L56.6,6.4 L62,8 L56.6,9.6 L55,15 L53.4,9.6 L48,8 L53.4,6.4 Z"/>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+
+      </ResourceDictionary>
+    </Application.Resources>
+</Application>

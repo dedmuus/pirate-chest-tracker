@@ -1,0 +1,11 @@
+{
+  "season": "Chapter 7 Season 4",
+  "items": [
+    { "key": "gold-outfit", "name": "Weekly Gold Outfit", "oneIn": 1562500, "weekly": true },
+    { "key": "pirate-shop", "name": "Pirate Shop Access", "oneIn": 137500, "weekly": false },
+    { "key": "vehicle-decal", "name": "Weekly Vehicle & Decal", "oneIn": 7813, "weekly": true },
+    { "key": "pickaxe-backbling", "name": "Weekly Pickaxe or Backbling", "oneIn": 568, "weekly": true },
+    { "key": "jam-track", "name": "Weekly Jam Track", "oneIn": 391, "weekly": true },
+    { "key": "loading-screen", "name": "Weekly Loading Screen", "oneIn": 272, "weekly": true }
+  ]
+}

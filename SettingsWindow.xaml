@@ -1,0 +1,423 @@
+<Window x:Class="ChestCounter.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ChestCounter"
+        Title="Chest Counter" Width="920" SizeToContent="Height" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen" Background="#0F1117" Foreground="#F2F3F7"
+        FontFamily="Segoe UI Variable Text, Segoe UI" FontSize="13" UseLayoutRounding="True">
+
+
+    <StackPanel Margin="20,14,20,18">
+      <!-- Update available -->
+      <Border x:Name="UpdateBanner" Visibility="Collapsed" Margin="0,0,0,12" Padding="14,10" CornerRadius="10"
+              Background="#2A2410" BorderBrush="#F5C542" BorderThickness="1">
+          <Grid>
+              <TextBlock x:Name="UpdateText" VerticalAlignment="Center" FontWeight="SemiBold"/>
+              <Button Content="Download" Style="{StaticResource PrimaryBtn}" HorizontalAlignment="Right"
+                      Padding="14,5" Click="Update_Click"/>
+          </Grid>
+      </Border>
+
+      <!-- First launch -->
+      <Border x:Name="SetupPage" Visibility="Collapsed" Style="{StaticResource Card}" Padding="28,24" Margin="0,0,0,4">
+          <StackPanel>
+              <StackPanel Orientation="Horizontal">
+                  <Image Source="{StaticResource ChestImage}" Width="54" Height="54"/>
+                  <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+                      <TextBlock Text="Welcome to Chest Counter" FontSize="22" FontWeight="SemiBold"/>
+                      <TextBlock Text="Two quick picks and you're ready." Style="{StaticResource RowSub}"/>
+                  </StackPanel>
+              </StackPanel>
+
+              <Grid Margin="0,24,0,0">
+                  <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*"/>
+                      <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center">
+                      <TextBlock Text="1.  The button you press when you open a chest" Style="{StaticResource RowTitle}" FontSize="15"/>
+                      <TextBlock Style="{StaticResource RowSub}" TextWrapping="Wrap" Margin="22,4,20,0"
+                                 Text="Click the box, then press a key, mouse button or controller button. Pick one you don't use in-game, like Mouse 5 or a D-pad direction. Avoid E: it also opens doors and picks up loot."/>
+                  </StackPanel>
+                  <Button x:Name="SetupCount" Grid.Column="1" Tag="Count" Style="{StaticResource KeyBtn}" MinWidth="170"
+                          Height="40" Click="Bind_Click"/>
+              </Grid>
+
+              <Grid Margin="0,20,0,0">
+                  <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="*"/>
+                      <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center">
+                      <TextBlock Text="2.  The button you press when a match ends" Style="{StaticResource RowTitle}" FontSize="15"/>
+                      <TextBlock Style="{StaticResource RowSub}" TextWrapping="Wrap" Margin="22,4,20,0"
+                                 Text="Saves that game's chests so you get a per-game average. You can also click End game in this window."/>
+                  </StackPanel>
+                  <Button x:Name="SetupEndGame" Grid.Column="1" Tag="EndGame" Style="{StaticResource KeyBtn}" MinWidth="170"
+                          Height="40" Click="Bind_Click"/>
+              </Grid>
+
+              <Border Margin="0,24,0,0" Padding="14,12" CornerRadius="10" Background="#232735">
+                  <TextBlock TextWrapping="Wrap" Style="{StaticResource RowSub}" Foreground="#F2F3F7">
+                      <Run FontWeight="SemiBold">In Fortnite:</Run> Settings › Display › Window Mode ›
+                      <Run FontWeight="SemiBold">Windowed Fullscreen</Run>. The counter can't show on top of plain Fullscreen.
+                  </TextBlock>
+              </Border>
+
+              <Button Content="Start counting" Style="{StaticResource PrimaryBtn}" HorizontalAlignment="Right"
+                      Margin="0,22,0,0" Padding="22,9" FontSize="14" Click="SetupDone_Click"/>
+          </StackPanel>
+      </Border>
+
+      <!-- Tabs -->
+      <StackPanel x:Name="TabsBar" Orientation="Horizontal" Margin="0,0,0,14">
+          <Button x:Name="CounterTab" Content="Counter" Style="{StaticResource PrimaryBtn}" MinWidth="110"
+                  Margin="0,0,8,0" Click="CounterTab_Click"/>
+          <Button x:Name="SeasonTab" Content="Season odds" Style="{StaticResource Btn}" MinWidth="110"
+                  Click="SeasonTab_Click"/>
+      </StackPanel>
+
+      <local:SeasonPanel x:Name="SeasonPage" Visibility="Collapsed"/>
+
+      <Grid x:Name="CounterPage">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left column -->
+        <StackPanel>
+
+        <!-- Counter -->
+        <Border Style="{StaticResource Card}" Padding="18,16">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{StaticResource ChestImage}" Width="54" Height="54"/>
+                    <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="Chest Counter" FontSize="20" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="GameLabel" Text="Chests this game" Style="{StaticResource RowSub}"/>
+                    </StackPanel>
+                    <TextBlock x:Name="BigCount" Grid.Column="2" Text="0" VerticalAlignment="Center"
+                               FontFamily="Bahnschrift, Segoe UI" FontWeight="Bold" FontSize="46"
+                               Foreground="{StaticResource Accent}"/>
+                </Grid>
+                <UniformGrid Columns="4" Margin="0,16,0,0">
+                    <Button Content="−  1" Style="{StaticResource Btn}" Margin="0,0,4,0" Click="Minus_Click"/>
+                    <Button Content="+  1" Style="{StaticResource PrimaryBtn}" Margin="4,0" Click="Plus_Click"/>
+                    <Button Content="Reset" Style="{StaticResource Btn}" Margin="4,0" Click="Reset_Click"
+                            ToolTip="Set this game back to 0 without saving it"/>
+                    <Button Content="End game" Style="{StaticResource Btn}" Margin="4,0,0,0" Click="EndGame_Click"
+                            ToolTip="Save this game's chests and start the next game"/>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+
+        <!-- Games -->
+        <TextBlock Text="Games" Style="{StaticResource Section}"/>
+        <Border Style="{StaticResource Card}" Padding="16,14">
+            <StackPanel>
+                <UniformGrid Columns="4">
+                    <StackPanel>
+                        <TextBlock x:Name="AvgStat" Text="–" FontFamily="Bahnschrift, Segoe UI" FontWeight="Bold" FontSize="26"
+                                   Foreground="{StaticResource Accent}"/>
+                        <TextBlock Text="Avg per game" Style="{StaticResource RowSub}"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock x:Name="BestStat" Text="–" FontFamily="Bahnschrift, Segoe UI" FontWeight="Bold" FontSize="26"/>
+                        <TextBlock Text="Best game" Style="{StaticResource RowSub}"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock x:Name="GamesStat" Text="0" FontFamily="Bahnschrift, Segoe UI" FontWeight="Bold" FontSize="26"/>
+                        <TextBlock Text="Games" Style="{StaticResource RowSub}"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock x:Name="TotalStat" Text="0" FontFamily="Bahnschrift, Segoe UI" FontWeight="Bold" FontSize="26"/>
+                        <TextBlock Text="Total chests" Style="{StaticResource RowSub}"/>
+                    </StackPanel>
+                </UniformGrid>
+
+                <Border Height="1" Background="{StaticResource Line}" Margin="0,14,0,4"/>
+
+                <TextBlock x:Name="NoGames" Margin="0,10" TextWrapping="Wrap" Style="{StaticResource RowSub}"
+                           Text="No games saved yet. Press your End game key when a match ends to save its chests here."/>
+
+                <ScrollViewer x:Name="GameScroll" MaxHeight="104" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer.Resources>
+                        <Style TargetType="ScrollBar">
+                            <Setter Property="Width" Value="6"/>
+                            <Setter Property="MinWidth" Value="6"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ScrollBar">
+                                        <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                            <Track.Thumb>
+                                                <Thumb>
+                                                    <Thumb.Template>
+                                                        <ControlTemplate TargetType="Thumb">
+                                                            <Border CornerRadius="3" Background="#3A3F50"/>
+                                                        </ControlTemplate>
+                                                    </Thumb.Template>
+                                                </Thumb>
+                                            </Track.Thumb>
+                                        </Track>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ScrollViewer.Resources>
+                    <ItemsControl x:Name="GameList">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,7">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Title}" Style="{StaticResource RowTitle}"/>
+                                        <TextBlock Text="{Binding When}" Style="{StaticResource RowSub}"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1" Text="{Binding Chests}" VerticalAlignment="Center" Margin="0,0,8,0"
+                                               FontFamily="Bahnschrift, Segoe UI" FontWeight="Bold" FontSize="20"
+                                               Foreground="{Binding Color}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <StackPanel x:Name="HistoryButtons" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                    <Button Content="Undo last save" Style="{StaticResource Btn}" Margin="0,0,8,0" Click="UndoGame_Click"
+                            ToolTip="Put the last saved game back as the current game"/>
+                    <Button Content="Clear history" Style="{StaticResource Btn}" Click="ClearHistory_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Friends -->
+        <TextBlock Text="Friends" Style="{StaticResource Section}"/>
+        <Border Style="{StaticResource Card}" Padding="16,14">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <TextBlock Text="Share with friends" Style="{StaticResource RowTitle}"/>
+                        <TextBlock Text="See each other's counters live" Style="{StaticResource RowSub}"/>
+                    </StackPanel>
+                    <CheckBox x:Name="SyncToggle" Grid.Column="1" Style="{StaticResource Toggle}" VerticalAlignment="Center"
+                              Click="SyncToggle_Click"/>
+                </Grid>
+
+                <Grid Margin="0,14,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="86"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="42"/>
+                        <RowDefinition Height="42"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Your name" Style="{StaticResource RowSub}" VerticalAlignment="Center"/>
+                    <TextBox x:Name="NameBox" Grid.Column="1" Grid.ColumnSpan="3" Height="34" MaxLength="20"
+                             Style="{StaticResource Field}" LostFocus="SyncField_Commit" KeyDown="SyncField_KeyDown"/>
+                    <TextBlock Grid.Row="1" Text="Room code" Style="{StaticResource RowSub}" VerticalAlignment="Center"/>
+                    <TextBox x:Name="CodeBox" Grid.Row="1" Grid.Column="1" Height="34" MaxLength="20" CharacterCasing="Upper"
+                             FontFamily="Bahnschrift, Segoe UI" FontSize="15" Style="{StaticResource Field}"
+                             LostFocus="SyncField_Commit" KeyDown="SyncField_KeyDown"/>
+                    <Button Grid.Row="1" Grid.Column="2" Content="New" Style="{StaticResource Btn}" Margin="8,0,0,0" Height="34"
+                            Click="NewCode_Click" ToolTip="Make a new room code"/>
+                    <Button x:Name="CopyButton" Grid.Row="1" Grid.Column="3" Content="Copy" Style="{StaticResource Btn}"
+                            Margin="6,0,0,0" Height="34" MinWidth="66" Click="CopyCode_Click"/>
+                </Grid>
+                <TextBlock Margin="0,6,0,0" TextWrapping="Wrap" Style="{StaticResource RowSub}"
+                           Text="Send your friend this code. They paste it into their Room code box and turn sharing on."/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                    <Ellipse x:Name="SyncDot" Width="8" Height="8" Fill="#6B7080" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="SyncStatus" Text="Off" Style="{StaticResource RowSub}" Margin="8,0,0,0"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <ItemsControl x:Name="FriendList" Margin="0,4,0,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" Style="{StaticResource RowTitle}"/>
+                                    <TextBlock Text="{Binding Detail}" Style="{StaticResource RowSub}"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" Text="{Binding Count}" VerticalAlignment="Center" Margin="0,0,8,0"
+                                           FontFamily="Bahnschrift, Segoe UI" FontWeight="Bold" FontSize="22"
+                                           Foreground="{StaticResource Accent}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+        </StackPanel>
+
+        <!-- Right column -->
+        <StackPanel Grid.Column="2">
+
+        <!-- Hotkeys -->
+        <TextBlock Text="Hotkeys" Style="{StaticResource Section}" Margin="4,0,0,8"/>
+        <Border Style="{StaticResource Card}">
+            <StackPanel>
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Count a chest" Style="{StaticResource RowTitle}"/>
+                        <TextBlock Text="Adds 1 to the counter" Style="{StaticResource RowSub}"/>
+                    </StackPanel>
+                    <Button x:Name="BindCount" Grid.Column="1" Tag="Count" Style="{StaticResource KeyBtn}" Click="Bind_Click"/>
+                    <Button Grid.Column="2" Tag="Count" Style="{StaticResource ClearBtn}" Click="Clear_Click"/>
+                </Grid>
+                <Border Height="1" Background="{StaticResource Line}"/>
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Undo" Style="{StaticResource RowTitle}"/>
+                        <TextBlock Text="Takes 1 off if you miscounted" Style="{StaticResource RowSub}"/>
+                    </StackPanel>
+                    <Button x:Name="BindUndo" Grid.Column="1" Tag="Undo" Style="{StaticResource KeyBtn}" Click="Bind_Click"/>
+                    <Button Grid.Column="2" Tag="Undo" Style="{StaticResource ClearBtn}" Click="Clear_Click"/>
+                </Grid>
+                <Border Height="1" Background="{StaticResource Line}"/>
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="End game" Style="{StaticResource RowTitle}"/>
+                        <TextBlock Text="Saves this game's chests, starts the next" Style="{StaticResource RowSub}"/>
+                    </StackPanel>
+                    <Button x:Name="BindEndGame" Grid.Column="1" Tag="EndGame" Style="{StaticResource KeyBtn}" Click="Bind_Click"/>
+                    <Button Grid.Column="2" Tag="EndGame" Style="{StaticResource ClearBtn}" Click="Clear_Click"/>
+                </Grid>
+                <Border Height="1" Background="{StaticResource Line}"/>
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Reset this game" Style="{StaticResource RowTitle}"/>
+                        <TextBlock Text="Back to 0 without saving it" Style="{StaticResource RowSub}"/>
+                    </StackPanel>
+                    <Button x:Name="BindReset" Grid.Column="1" Tag="Reset" Style="{StaticResource KeyBtn}" Click="Bind_Click"/>
+                    <Button Grid.Column="2" Tag="Reset" Style="{StaticResource ClearBtn}" Click="Clear_Click"/>
+                </Grid>
+                <Border Height="1" Background="{StaticResource Line}"/>
+                <Grid Margin="0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Show / hide overlay" Style="{StaticResource RowTitle}"/>
+                        <TextBlock Text="Toggles the counter on screen" Style="{StaticResource RowSub}"/>
+                    </StackPanel>
+                    <Button x:Name="BindToggle" Grid.Column="1" Tag="Toggle" Style="{StaticResource KeyBtn}" Click="Bind_Click"/>
+                    <Button Grid.Column="2" Tag="Toggle" Style="{StaticResource ClearBtn}" Click="Clear_Click"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Overlay -->
+        <TextBlock Text="Overlay" Style="{StaticResource Section}"/>
+        <Border Style="{StaticResource Card}" Padding="16,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="130"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="52"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="38"/>
+                    <RowDefinition Height="38"/>
+                    <RowDefinition Height="38"/>
+                    <RowDefinition Height="38"/>
+                    <RowDefinition Height="38"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Show overlay" Style="{StaticResource RowTitle}" VerticalAlignment="Center"/>
+                <CheckBox x:Name="ShowToggle" Grid.Column="2" Style="{StaticResource Toggle}" HorizontalAlignment="Right"
+                          VerticalAlignment="Center" Click="ShowToggle_Click"/>
+
+                <StackPanel Grid.Row="5" Grid.ColumnSpan="2" VerticalAlignment="Center">
+                    <TextBlock Text="Only while Fortnite is open" Style="{StaticResource RowTitle}"/>
+                    <TextBlock Text="Also shows while this window is open" Style="{StaticResource RowSub}"/>
+                </StackPanel>
+                <CheckBox x:Name="FortniteOnlyToggle" Grid.Row="5" Grid.Column="2" Style="{StaticResource Toggle}"
+                          HorizontalAlignment="Right" VerticalAlignment="Center" Click="FortniteOnlyToggle_Click"/>
+
+                <TextBlock Grid.Row="1" Text="Size" Style="{StaticResource RowTitle}" VerticalAlignment="Center"/>
+                <Slider x:Name="ScaleSlider" Grid.Row="1" Grid.Column="1" Minimum="0.5" Maximum="2.5"
+                        VerticalAlignment="Center" ValueChanged="Layout_Changed"/>
+                <TextBlock x:Name="ScaleText" Grid.Row="1" Grid.Column="2" Foreground="{StaticResource Sub}"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="2" Text="Opacity" Style="{StaticResource RowTitle}" VerticalAlignment="Center"/>
+                <Slider x:Name="OpacitySlider" Grid.Row="2" Grid.Column="1" Minimum="0.3" Maximum="1"
+                        VerticalAlignment="Center" ValueChanged="Layout_Changed"/>
+                <TextBlock x:Name="OpacityText" Grid.Row="2" Grid.Column="2" Foreground="{StaticResource Sub}"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="3" Text="From left edge" Style="{StaticResource RowTitle}" VerticalAlignment="Center"/>
+                <Slider x:Name="XSlider" Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="1600"
+                        VerticalAlignment="Center" ValueChanged="Layout_Changed"/>
+                <TextBlock x:Name="XText" Grid.Row="3" Grid.Column="2" Foreground="{StaticResource Sub}"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+                <TextBlock Grid.Row="4" Text="From top edge" Style="{StaticResource RowTitle}" VerticalAlignment="Center"/>
+                <Slider x:Name="YSlider" Grid.Row="4" Grid.Column="1" Minimum="0" Maximum="900"
+                        VerticalAlignment="Center" ValueChanged="Layout_Changed"/>
+                <TextBlock x:Name="YText" Grid.Row="4" Grid.Column="2" Foreground="{StaticResource Sub}"
+                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+        </StackPanel>
+      </Grid>
+
+        <TextBlock x:Name="FooterTip" Margin="4,16,4,0" TextWrapping="Wrap" Foreground="{StaticResource Sub}" FontSize="12" LineHeight="18">
+            Set Fortnite's Window Mode to <Run Foreground="#F2F3F7" FontWeight="SemiBold">Windowed Fullscreen</Run>
+            so the counter shows on top. Closing this window keeps Chest Counter running in the system tray.
+        </TextBlock>
+
+        <Grid Margin="0,16,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Quit" Style="{StaticResource Btn}" Margin="0,0,8,0" Click="Quit_Click"/>
+                <Button Content="Hide to tray" Style="{StaticResource PrimaryBtn}" Click="Hide_Click"/>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</Window>
