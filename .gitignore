@@ -14,3 +14,11 @@ settings*.json
 # Brag videos and their working files
 brag-output*/
 brag-assets/
+
+# AI coding-agent local files: these can store approved commands that contain
+# passwords or API keys (see the Claude Code settings.local.json leaks)
+.claude/
+CLAUDE.local.md
+.mcp.json
+.env
+.env.*
