@@ -20,6 +20,7 @@ public partial class SettingsWindow : Window
     {
         InitializeComponent();
         Icon = ChestArt.Render(64);
+        MaxHeight = SystemParameters.WorkArea.Height; // never taller than the screen; the page scrolls instead
 
         XSlider.Maximum = Math.Max(200, SystemParameters.PrimaryScreenWidth - 120);
         YSlider.Maximum = Math.Max(200, SystemParameters.PrimaryScreenHeight - 80);
