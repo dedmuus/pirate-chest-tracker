@@ -191,8 +191,9 @@ public partial class SeasonPanel : UserControl
 
         AutoToggle.IsChecked = S.AutoEndGame;
         AutoText.Text = S.AutoEndGame && app.AutoStatus.Length > 0
-            ? app.AutoStatus + " Your End game button still works too."
-            : "Saves each game for you when Fortnite records the match. Chests you open in the next game stay in the next game, even though the stats arrive a few minutes late.";
+            ? app.AutoStatus
+            : "Saves each game for you when Fortnite records the match.";
+        AutoText.ToolTip = "Chests you open in the next game stay in the next game, even though the stats arrive a few minutes late. Your End game button still works too.";
 
         LootTitle.Text = $"Loot odds · {Loot.Season}";
 

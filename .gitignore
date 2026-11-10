@@ -10,3 +10,7 @@ restore-my-games.bat
 settings*.json
 *.user
 .vs/
+
+# Brag videos and their working files
+brag-output*/
+brag-assets/

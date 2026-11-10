@@ -28,16 +28,14 @@
                     <TextBox x:Name="KeyBox" Grid.Row="1" Grid.Column="1" Height="34" MaxLength="64" Style="{StaticResource Field}"
                              FontFamily="Consolas" LostFocus="Field_Commit"/>
                     <Button Grid.Row="1" Grid.Column="2" Content="Get a free key" Style="{StaticResource Btn}" Height="34"
-                            MinWidth="120" Margin="8,0,0,0" Click="GetKey_Click"/>
+                            MinWidth="120" Margin="8,0,0,0" Click="GetKey_Click"
+                            ToolTip="Free key from Fortnite-API.com (same Epic stats as Fortnite Tracker). Each player sets up their own."/>
                 </Grid>
-                <TextBlock Margin="0,6,0,0" TextWrapping="Wrap" Style="{StaticResource RowSub}"
-                           Text="Free key from Fortnite-API.com (same Epic stats as Fortnite Tracker). Your friend sets up his own."/>
-                <Border Height="1" Background="{StaticResource Line}" Margin="0,12,0,0"/>
                 <Grid Margin="0,10,0,0">
                     <StackPanel Margin="0,0,60,0">
                         <TextBlock Text="Automatic End game" Style="{StaticResource RowTitle}"/>
-                        <TextBlock x:Name="AutoText" Style="{StaticResource RowSub}" TextWrapping="Wrap"
-                                   Text="Saves each game for you when Fortnite records the match. Chests you open in the next game stay in the next game, even though the stats arrive a few minutes late."/>
+                        <TextBlock x:Name="AutoText" Style="{StaticResource RowSub}" TextTrimming="CharacterEllipsis"
+                                   Text="Saves each game for you when Fortnite records the match."/>
                     </StackPanel>
                     <CheckBox x:Name="AutoToggle" Style="{StaticResource Toggle}" HorizontalAlignment="Right"
                               VerticalAlignment="Center" Click="AutoToggle_Click"/>
@@ -103,7 +101,7 @@
                     <TextBlock Grid.Column="1" Text="Odds per chest"/>
                     <TextBlock Grid.Column="2" Text="You" HorizontalAlignment="Right"/>
                     <TextBlock x:Name="FriendHeader" Grid.Column="3" Text="Friend" HorizontalAlignment="Right"
-                               TextTrimming="CharacterEllipsis"/>
+                               TextTrimming="CharacterEllipsis" MaxWidth="74"/>
                     <TextBlock x:Name="EitherHeader" Grid.Column="4" Text="Either of you" HorizontalAlignment="Right"/>
                     <TextBlock Grid.Column="5" Text="Got it" HorizontalAlignment="Right"/>
                 </Grid>
@@ -112,7 +110,7 @@
                 <ItemsControl x:Name="OddsList">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid Margin="0,6">
+                            <Grid Margin="0,4">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="100"/>
@@ -143,7 +141,7 @@
                 </ItemsControl>
 
                 <TextBlock Margin="0,8,0,4" TextWrapping="Wrap" Style="{StaticResource RowSub}"
-                           Text="Chance of getting each item at least once. Weekly items use the chests you've counted since New week; season items use season matches × your average chests per game."/>
+                           Text="Chance of getting each item at least once. Weekly items: chests since New week. Season items: whole season."/>
             </StackPanel>
         </Border>
     </StackPanel>

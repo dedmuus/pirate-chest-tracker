@@ -1,6 +1,16 @@
+![Pirate Chest Tracker: counts every chest you open in Fortnite](docs/images/banner.png)
+
 # Pirate Chest Tracker
 
 **Chest Counter** is a small, good-looking overlay that counts the chests you open in Fortnite. Press a button when you open a chest, press another when the match ends, and it keeps your per-game average, your season loot odds, and (optionally) a live view of a friend's counter.
+
+**[Download the latest release](../../releases/latest)** · Free · Windows · Unzip and run
+
+## See it in action
+
+[![Watch the 23-second demo](docs/images/video-poster.jpg)](docs/media/pirate-chest-tracker.mp4)
+
+*Click to watch the 23-second demo.*
 
 > Not affiliated with or endorsed by Epic Games. Fortnite is a trademark of Epic Games, Inc.
 
@@ -21,6 +31,18 @@ Windows will show "Windows protected your PC" because the exe isn't code-signed.
 - **Only while Fortnite is open:** the overlay hides itself when you're not playing.
 - **Automatic End game (optional, off by default):** saves each game for you when Fortnite records the match. It splits by the time the match ended, so chests you open in the next game stay in the next game even though the stats arrive a few minutes late.
 - **Update check:** tells you when a new release is out. Your stats carry over.
+
+### One button per chest
+
+![Count with one button: keyboard, mouse or controller](docs/images/feature-count.png)
+
+### Every game saved
+
+![Every game saved: your average, best game and total](docs/images/feature-stats.png)
+
+### Your loot odds
+
+![Season loot odds for every drop](docs/images/feature-odds.png)
 
 ## Does it touch the game?
 
