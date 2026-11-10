@@ -8,9 +8,7 @@
 
 ## See it in action
 
-[![Watch the 23-second demo](docs/images/video-poster.jpg)](docs/media/pirate-chest-tracker.mp4)
-
-*Click to watch the 23-second demo.*
+https://github.com/user-attachments/assets/a444bb9f-81d9-49a1-b447-c892cbda637f
 
 > Not affiliated with or endorsed by Epic Games. Fortnite is a trademark of Epic Games, Inc.
 
