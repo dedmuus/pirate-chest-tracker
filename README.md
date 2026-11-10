@@ -64,6 +64,6 @@ Requires the .NET 10 SDK on Windows.
 dotnet publish ChestCounter.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -p:EnableCompressionInSingleFile=true -p:DebugType=none -o dist
 ```
 
-To release: push a tag like `v1.1.0` (the repo is set in `AppInfo.cs` as `RepoSlug`). GitHub Actions builds the zip, adds a checksum, and publishes the release.
+To release: write the notes in `docs/releases/vX.Y.Z.md` (first line `# vX.Y.Z: Title`, then what changed for players), then push a tag like `v1.1.0`. The release build fails if the notes file is missing (the repo is set in `AppInfo.cs` as `RepoSlug`). GitHub Actions builds the zip, adds a checksum, and publishes the release.
 
 For testing, `ChestCounter.exe --profile Test` runs a separate copy with its own settings folder.

@@ -43,6 +43,21 @@ jobs:
           "$hash  ChestCounter.zip" | Set-Content ChestCounter.zip.sha256
           "SHA-256: $hash"
 
+      # Every release needs written notes in docs/releases/<tag>.md:
+      # first line "# vX.Y.Z: Title" becomes the release name, the rest is the body.
+      - name: Read release notes
+        if: github.ref_type == 'tag'
+        id: notes
+        shell: pwsh
+        run: |
+          $file = "docs/releases/${{ github.ref_name }}.md"
+          if (-not (Test-Path $file)) { Write-Error "Missing $file. Write the release notes before tagging."; exit 1 }
+          $lines = Get-Content $file
+          $title = $lines[0] -replace '^#\s*', ''
+          if ($title.Length -eq 0) { Write-Error "$file must start with '# vX.Y.Z: Title'."; exit 1 }
+          "title=$title" >> $env:GITHUB_OUTPUT
+          ($lines | Select-Object -Skip 1) -join "`n" | Set-Content release-body.md
+
       - uses: actions/upload-artifact@v4
         with:
           name: ChestCounter
@@ -57,4 +72,5 @@ jobs:
           files: |
             ChestCounter.zip
             ChestCounter.zip.sha256
-          generate_release_notes: true
+          name: ${{ steps.notes.outputs.title }}
+          body_path: release-body.md
