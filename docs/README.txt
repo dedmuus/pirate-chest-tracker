@@ -39,9 +39,10 @@ PLAYING WITH A FRIEND (optional)
   so don't post it publicly.
 
 SEASON ODDS
-- Click the "Season odds" tab. Click "Get a free key", log in at
-  dash.fortnite-api.com, copy your key and paste it in. Type your Epic name and
-  click Refresh stats.
+- Click the "Season odds" tab, type your Epic name and click Refresh stats.
+  No key needed: it uses a shared stats service.
+- Optional: if the shared service is busy or down, click "Get a free key", log in
+  at dash.fortnite-api.com, copy your key and paste it into "Own API key".
 - It shows this season's matches and wins, estimates your chests this season
   (matches x your average chests per game) and your chance of getting each
   loot item. "Got it" marks items you've received.

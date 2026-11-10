@@ -14,6 +14,12 @@ public static class AppInfo
 
     public static string RepoUrl => $"https://github.com/{RepoSlug}";
 
+    /// <summary>
+    /// Shared stats service (worker/ in this repo) used when the player hasn't entered their own
+    /// Fortnite-API key. It holds the shared key as a Cloudflare secret.
+    /// </summary>
+    public const string StatsProxyUrl = "https://chest-counter-stats.rooms-server.workers.dev";
+
     public static string Version =>
         Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "1.0.0";
 }

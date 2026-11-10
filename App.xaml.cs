@@ -262,9 +262,9 @@ public partial class App : Application
     async System.Threading.Tasks.Task AutoTick()
     {
         if (!Settings.AutoEndGame || autoChecking) return;
-        if (Settings.EpicName.Length == 0 || Settings.FortniteApiKey.Length == 0)
+        if (Settings.EpicName.Length == 0)
         {
-            SetAutoStatus("Needs your Epic name and API key above.");
+            SetAutoStatus("Needs your Epic name above.");
             return;
         }
 
@@ -331,7 +331,7 @@ public partial class App : Application
     /// </summary>
     void ScheduleSeasonRefresh()
     {
-        if (Settings.EpicName.Length == 0 || Settings.FortniteApiKey.Length == 0) return;
+        if (Settings.EpicName.Length == 0) return;
         seasonTimer?.Stop();
         seasonRefreshStep = 0;
         seasonTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMinutes(3) };

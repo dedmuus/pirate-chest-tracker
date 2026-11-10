@@ -26,12 +26,12 @@ public static class SeasonStats
     public static async Task<SeasonResult> FetchAsync(string epicName, string platform, string apiKey, CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(epicName)) throw new SeasonStatsException("Enter your Epic name first.");
-        if (string.IsNullOrWhiteSpace(apiKey)) throw new SeasonStatsException("Paste your free Fortnite-API key first.");
-
-        string url = "https://fortnite-api.com/v2/stats/br/v2"
+        // No key of their own: go through the shared stats service, which adds the shared key.
+        bool shared = string.IsNullOrWhiteSpace(apiKey);
+        string url = (shared ? AppInfo.StatsProxyUrl : "https://fortnite-api.com") + "/v2/stats/br/v2"
             + $"?name={Uri.EscapeDataString(epicName.Trim())}&accountType={Uri.EscapeDataString(platform)}&timeWindow=season";
         using var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.TryAddWithoutValidation("Authorization", apiKey.Trim());
+        if (!shared) request.Headers.TryAddWithoutValidation("Authorization", apiKey.Trim());
 
         HttpResponseMessage response;
         string body;
@@ -42,7 +42,9 @@ public static class SeasonStats
         }
         catch (Exception e) when (e is HttpRequestException or TaskCanceledException)
         {
-            throw new SeasonStatsException("Couldn't reach Fortnite-API.com. Check your internet and try again.");
+            throw new SeasonStatsException(shared
+                ? "Couldn't reach the stats service. Check your internet, or add your own free key."
+                : "Couldn't reach Fortnite-API.com. Check your internet and try again.");
         }
 
         using (response)
@@ -58,7 +60,9 @@ public static class SeasonStats
                     HttpStatusCode.Unauthorized => "That API key isn't valid. Copy it again from dash.fortnite-api.com.",
                     HttpStatusCode.Forbidden => "Those stats are private. In Fortnite: Settings › Account and Privacy › turn on \"Show on Career Leaderboard\", then try again.",
                     HttpStatusCode.NotFound => $"No account called \"{epicName.Trim()}\" on that platform.",
+                    (HttpStatusCode)429 when shared => "The shared stats service is busy. Wait a minute, or add your own free key.",
                     (HttpStatusCode)429 => "Too many lookups. Wait a minute and try again.",
+                    _ when shared && (int)response.StatusCode >= 500 => "The shared stats service isn't working right now. Add your own free key to keep going.",
                     _ => $"Fortnite-API.com error {(int)response.StatusCode}: {apiError}"
                 });
             }

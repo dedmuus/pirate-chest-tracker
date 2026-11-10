@@ -1,0 +1,7 @@
+name = "chest-counter-stats"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+# The shared Fortnite-API key is a secret, set once with:
+#   npx wrangler secret put FORTNITE_API_KEY
+# It is never stored in this repo.

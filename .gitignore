@@ -22,3 +22,6 @@ CLAUDE.local.md
 .mcp.json
 .env
 .env.*
+.dev.vars
+.wrangler/
+node_modules/

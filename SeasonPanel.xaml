@@ -24,12 +24,17 @@
                     <Button x:Name="PlatformButton" Grid.Column="2" Style="{StaticResource Btn}" Height="34" MinWidth="120"
                             Margin="8,0,0,0" Click="Platform_Click" ToolTip="Which account the name belongs to (click to change)"/>
 
-                    <TextBlock Grid.Row="1" Text="API key" Style="{StaticResource RowSub}" VerticalAlignment="Center"/>
-                    <TextBox x:Name="KeyBox" Grid.Row="1" Grid.Column="1" Height="34" MaxLength="64" Style="{StaticResource Field}"
-                             FontFamily="Consolas" LostFocus="Field_Commit"/>
+                    <TextBlock Grid.Row="1" Text="Own API key" Style="{StaticResource RowSub}" VerticalAlignment="Center"
+                               ToolTip="Optional. Leave it empty to use the shared stats service."/>
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <TextBox x:Name="KeyBox" Height="34" MaxLength="64" Style="{StaticResource Field}"
+                                 FontFamily="Consolas" LostFocus="Field_Commit" TextChanged="KeyBox_TextChanged"/>
+                        <TextBlock x:Name="KeyHint" Text="Optional · leave empty to use the shared one" IsHitTestVisible="False"
+                                   Foreground="{StaticResource Sub}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                    </Grid>
                     <Button Grid.Row="1" Grid.Column="2" Content="Get a free key" Style="{StaticResource Btn}" Height="34"
                             MinWidth="120" Margin="8,0,0,0" Click="GetKey_Click"
-                            ToolTip="Free key from Fortnite-API.com (same Epic stats as Fortnite Tracker). Each player sets up their own."/>
+                            ToolTip="Optional: your own free key from Fortnite-API.com, if the shared service is busy or down."/>
                 </Grid>
                 <Grid Margin="0,10,0,0">
                     <StackPanel Margin="0,0,60,0">

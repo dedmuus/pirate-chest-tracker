@@ -42,8 +42,11 @@ public partial class SeasonPanel : UserControl
         Render();
         // Refresh if it's been a while.
         bool stale = S.SeasonFetchedAt == null || DateTime.Now - S.SeasonFetchedAt > TimeSpan.FromMinutes(10);
-        if (stale && S.EpicName.Length > 0 && S.FortniteApiKey.Length > 0) await RefreshStats();
+        if (stale && S.EpicName.Length > 0) await RefreshStats();
     }
+
+    void KeyBox_TextChanged(object sender, TextChangedEventArgs e) =>
+        KeyHint.Visibility = KeyBox.Text.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
 
     void UpdatePlatformButton()
     {
@@ -163,7 +166,7 @@ public partial class SeasonPanel : UserControl
         if (have && StatusText.Foreground is SolidColorBrush b && b.Color != Color.FromRgb(0xFF, 0x8A, 0x8A))
             StatusText.Text = $"Updated {S.SeasonFetchedAt:MMM d, h:mm tt} for {S.EpicName}";
         else if (!have && !loading && StatusText.Text.Length == 0)
-            StatusText.Text = "Enter your Epic name and API key, then click Refresh stats.";
+            StatusText.Text = "Enter your Epic name, then click Refresh stats.";
 
         double myChests = S.SeasonChests;
         MatchesStat.Text = have ? S.SeasonMatches.ToString("N0") : "–";

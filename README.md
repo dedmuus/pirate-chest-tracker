@@ -23,7 +23,7 @@ Windows will show "Windows protected your PC" because the exe isn't code-signed.
 - **Overlay in the top-left** on top of Fortnite (Window Mode: *Windowed Fullscreen*). Click-through, so it never gets in the way.
 - **Any button:** keyboard keys, mouse buttons (Mouse 4/5), or controller buttons (Xbox controllers, or others via Steam Input / DS4Windows). Your button still works in-game as normal.
 - **Per-game stats:** game number, average chests per game, best game, total, and a list of past games.
-- **Season odds:** pulls this season's matches from [Fortnite-API.com](https://fortnite-api.com) (free key), estimates your chests this season, and shows your chance of getting each loot item. Mark items off when you get them.
+- **Season odds:** type your Epic name and it pulls this season's matches from [Fortnite-API.com](https://fortnite-api.com) (no key needed; you can add your own free key if you like), estimates your chests this season, and shows your chance of getting each loot item. Mark items off when you get them.
 - **Weekly items:** press *New week* when the week resets and weekly items count only that week's chests, while season items (like Pirate Shop Access) keep counting the whole season.
 - **Friends:** share a room code to see each other's counters and odds live.
 - **Only while Fortnite is open:** the overlay hides itself when you're not playing.
@@ -50,7 +50,7 @@ No. Chest Counter never reads or changes Fortnite's memory or files. It's a sepa
 
 - Stats are stored locally in `%APPDATA%\ChestCounter`.
 - Friend sharing (off by default) sends your name and chest stats through the public MQTT server `broker.emqx.io`. Anyone with your room code can see them.
-- Season odds sends your Epic name and your own API key to Fortnite-API.com.
+- Season odds sends your Epic name to the shared stats service ([`worker/`](worker), a Cloudflare Worker that adds the shared Fortnite-API key and caches each lookup for a minute), or straight to Fortnite-API.com with your own key if you entered one.
 
 ## Updating the loot odds each season
 
