@@ -136,8 +136,9 @@ public partial class SeasonPanel : UserControl
 
     void AutoToggle_Click(object sender, RoutedEventArgs e)
     {
+        bool on = AutoToggle.IsChecked == true; // read first: Field_Commit re-renders and would reset the toggle
         Field_Commit(this, new RoutedEventArgs());
-        app.SetAutoEndGame(AutoToggle.IsChecked == true);
+        app.SetAutoEndGame(on);
     }
 
     void NewWeek_Click(object sender, RoutedEventArgs e)

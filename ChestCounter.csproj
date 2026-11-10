@@ -10,7 +10,7 @@
     <AssemblyName>ChestCounter</AssemblyName>
     <RootNamespace>ChestCounter</RootNamespace>
     <Product>Chest Counter</Product>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <ApplicationIcon Condition="Exists('chest.ico')">chest.ico</ApplicationIcon>
   </PropertyGroup>
 
